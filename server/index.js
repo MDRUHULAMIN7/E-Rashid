@@ -44,7 +44,7 @@ const productsCollection = datbase.collection('products')
 
 
 
-    console.log("EduTrack successfully connected to MongoDB!");
+    console.log("E-Rashid successfully connected to MongoDB!");
   } finally {
     
    
