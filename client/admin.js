@@ -4,6 +4,7 @@ import { initializeAllProductsPage } from './utils/initializeAllProductsPage.js'
 const pageContentWrapper = document.getElementById("page-content-wrapper");
 
 async function loadPageContent(filePath,callback) {
+
   try {
     const response = await fetch(filePath);
     const html = await response.text();
@@ -54,5 +55,34 @@ overlay.addEventListener('click', () => {
   sidebar.classList.add('-translate-x-full');
   overlay.classList.add('hidden');
   mainContent.classList.remove('blur-xl', 'pointer-events-none');
-  toggleBtn.classList.remove('hidden'); // 👈 Show toggle again
+  toggleBtn.classList.remove('hidden'); 
+});
+
+
+
+function showToast(message, type = 'success') {
+  const toast = document.createElement('div');
+  const baseStyle = 'px-4 py-3 rounded shadow-md text-white animate-slide-in';
+  const typeStyle = type === 'success'
+    ? 'bg-green-600'
+    : type === 'error'
+    ? 'bg-red-600'
+    : 'bg-gray-700';
+
+  toast.className = `${baseStyle} ${typeStyle}`;
+  toast.innerText = message;
+
+  const container = document.getElementById('toast-container');
+  container.appendChild(toast);
+
+  // Auto remove after 3 seconds
+  setTimeout(() => {
+    toast.classList.add('opacity-0');
+    setTimeout(() => toast.remove(), 500);
+  }, 3000);
+}
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateRashidCount();
 });
