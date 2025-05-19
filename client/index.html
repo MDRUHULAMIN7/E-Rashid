@@ -1,18 +1,167 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <title>Bill Craft</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playwrite+CU:wght@100..400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Product List - Ecommerce Food Website</title>
 </head>
-<body class="p-10 bg-gray-100">
-  <h1 class="text-2xl font-bold mb-5">Product List</h1>
-  <ul id="product-list" class="space-y-3"></ul>
-  <h1>Hello World</h1>
 
-  <h1>hello from ruhul</h1>
-  <h1>hello from ruhul</h1>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="index.html"><img src="imgs/1000001763.png" style="width: 100px; height: 90px;" class="img-fluid" alt="Logo"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+   
+          <li class="nav-item"><a class="nav-link" href="admin.html">Meet Our Team</a></li>
+        </ul>
+       
+      </div>
+    </div>
+  </nav>
 
+  <!-- Search Section -->
+  <section class="search mt-5 pt-5">
+    <div class="container" style="margin-top: 90px;">
+      <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+          <div class="d-flex justify-content-center">
+            <input type="text" class="form-control me-2" placeholder="Search food">
+            <button class="btn btn-success">Search</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Button -->
+  <section class="cart" style="position: fixed; bottom: 20px; right: 20px; z-index: 999;">
+    <button class="btn btn-outline-success position-relative" data-bs-toggle="modal" data-bs-target="#addToCartModal">
+      <i class="bi bi-bag-check" style="font-size: 28px;"></i>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3
+        <span class="visually-hidden">items in cart</span>
+      </span>
+    </button>
+  </section>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="addToCartModalLabel">Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Cart Items -->
+          <div class="cart-item d-flex justify-content-between align-items-center py-3 border-bottom">
+            <div class="d-flex align-items-center">
+              <img src="imgs/menu1.jpg" alt="Muffins" class="img-fluid rounded" style="width: 80px; height: 80px;">
+              <div class="ms-3">
+                <h6 class="mb-0">Muffins</h6>
+                <small class="text-muted">Delicious muffins, perfect for breakfast or a snack.</small>
+                <div class="mt-2"><span class="badge bg-light text-dark">Quantity: 2</span></div>
+              </div>
+            </div>
+            <div class="text-end">
+              <h6>$11.20</h6>
+              <button class="btn btn-outline-danger btn-sm mt-2">Remove</button>
+            </div>
+          </div>
+
+          <div class="cart-item d-flex justify-content-between align-items-center py-3 border-bottom">
+            <div class="d-flex align-items-center">
+              <img src="imgs/menu2.jpg" alt="Pancakes" class="img-fluid rounded" style="width: 80px; height: 80px;">
+              <div class="ms-3">
+                <h6 class="mb-0">Pancakes</h6>
+                <small class="text-muted">Soft and fluffy pancakes, perfect for brunch.</small>
+                <div class="mt-2"><span class="badge bg-light text-dark">Quantity: 1</span></div>
+              </div>
+            </div>
+            <div class="text-end">
+              <h6>$5.60</h6>
+              <button class="btn btn-outline-danger btn-sm mt-2">Remove</button>
+            </div>
+          </div>
+
+          <div class="cart-item d-flex justify-content-between align-items-center py-3 border-bottom">
+            <div class="d-flex align-items-center">
+              <img src="imgs/menu3.jpg" alt="Waffles" class="img-fluid rounded" style="width: 80px; height: 80px;">
+              <div class="ms-3">
+                <h6 class="mb-0">Waffles</h6>
+                <small class="text-muted">Crispy waffles topped with fresh berries.</small>
+                <div class="mt-2"><span class="badge bg-light text-dark">Quantity: 3</span></div>
+              </div>
+            </div>
+            <div class="text-end">
+              <h6>$16.80</h6>
+              <button class="btn btn-outline-danger btn-sm mt-2">Remove</button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <div class="me-auto">
+            <h5 class="mb-0">Subtotal: <span class="text-success">$33.60</span></h5>
+          </div>
+          <button type="button" class="btn btn-success">Checkout</button>
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Cards Section (4 in 1 row) -->
+  <section class="filter-section container mt-5">
+    <div class="row" id="product-list">
+      <!-- Repeat with col-lg-3 for 4 cards per row -->
+
+
+      
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <h5>About Us</h5>
+          <p>We are committed to offering the finest organic food with a focus on quality and sustainability.</p>
+          <a href="index.html#about" class="btn btn-success">Learn More</a>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html" class="text-light">Home</a></li>
+            <li><a href="services.html" class="text-light">Services</a></li>
+            <li><a href="blog.html" class="text-light">Blog</a></li>
+            <li><a href="about.html" class="text-light">About</a></li>
+            <li><a href="contact.html" class="text-light">Contact</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-3">
+          <h5>Contact Us</h5>
+          <p><i class="bi bi-telephone"></i> +1 (234) 567-890</p>
+          <p><i class="bi bi-envelope"></i> info@foodu.com</p>
+          <p><i class="bi bi-geo-alt"></i> 123 Food Street, Gourmet City, USA</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="script.js"></script>
 </body>
+
 </html>

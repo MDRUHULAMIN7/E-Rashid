@@ -44,7 +44,7 @@ const productsCollection = datbase.collection('products')
 
 
 
-    console.log("EduTrack successfully connected to MongoDB!");
+    console.log("E-Rashid successfully connected to MongoDB!");
   } finally {
     
    
@@ -56,9 +56,9 @@ run().catch(console.dir);
 
 
 app.get( '/' ,(req,res)=>{
-    res.send('billcraft running');
+    res.send('E-Rashid running');
 })
 
 app.listen(port,()=>{
-    console.log(`billcraft is running on:${port}`);
+    console.log(`E-Rashid is running on:${port}`);
 })
