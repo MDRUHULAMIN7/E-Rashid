@@ -1,31 +1,58 @@
-fetch('http://localhost:5000/api/products')
-    .then(res => res.json())
-    .then(products => {
-      console.log(products)
-      const list = document.getElementById('product-list');
-      list.innerHTML = ''; // Clear existing content
+// admin.js
+import { initializeAllProductsPage } from './utils/initializeAllProductsPage.js';
 
-      products.forEach(product => {
-        const col = document.createElement('div');
-        col.className = 'col-lg-3 col-md-4 col-sm-6 mb-4';
+const pageContentWrapper = document.getElementById("page-content-wrapper");
 
-        col.innerHTML = `
-          <div class="card h-100 shadow-sm border-0">
-            <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px; object-fit: cover;">
-            <div class="card-body">
-              <h5 class="card-title">${product.name}</h5>
-              <p class="card-text text-muted" style="font-size: 0.9rem;">${product.description}</p>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="text-success fw-bold">৳${product.price}</span>
-                <button class="btn btn-sm btn-outline-success">
-                  <i class="bi bi-cart-plus"></i> Add
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
+async function loadPageContent(filePath,callback) {
+  try {
+    const response = await fetch(filePath);
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const bodyContent = doc.body.innerHTML;
 
-        list.appendChild(col);
-      });
-    })
-    .catch(err => console.error('Error:', err));
+    pageContentWrapper.innerHTML = bodyContent;
+
+    if (typeof callback === "function") {
+      callback();
+    }
+
+  } catch (error) {
+    console.error("Error loading content:", error);
+    pageContentWrapper.innerHTML = "<p>Error loading content.</p>";
+  }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadPageContent("admin-component/allProducts.html", initializeAllProductsPage);
+});
+
+
+
+// toogle btn
+const toggleBtn = document.getElementById('toggleSidebar');
+const closeBtn = document.getElementById('closeSidebar');
+const sidebar = document.getElementById('sidebar-wrapper');
+const overlay = document.getElementById('overlay');
+const mainContent = document.getElementById('main-content');
+
+toggleBtn.addEventListener('click', () => {
+  sidebar.classList.remove('-translate-x-full');
+  overlay.classList.remove('hidden');
+  mainContent.classList.add('blur-sm', 'pointer-events-none');
+  toggleBtn.classList.add('hidden'); // 👈 Hide toggle (three dot)
+});
+
+closeBtn.addEventListener('click', () => {
+  sidebar.classList.add('-translate-x-full');
+  overlay.classList.add('hidden');
+  mainContent.classList.remove('blur-sm', 'pointer-events-none');
+  toggleBtn.classList.remove('hidden'); // 👈 Show toggle again
+});
+
+overlay.addEventListener('click', () => {
+  sidebar.classList.add('-translate-x-full');
+  overlay.classList.add('hidden');
+  mainContent.classList.remove('blur-xl', 'pointer-events-none');
+  toggleBtn.classList.remove('hidden'); // 👈 Show toggle again
+});

@@ -43,6 +43,43 @@ const productsCollection = datbase.collection('products')
   });
 
 
+// serch products
+
+app.get('/api/products/search', async (req, res) => {
+  const searchQuery = req.query.name;
+
+
+  try {
+    const query = searchQuery
+      ? { name: { $regex: searchQuery, $options: 'i' } } 
+      : {};
+
+    const results = await productsCollection.find(query).toArray();
+    console.log('Search results count:', results.length);
+    res.json(results);
+  } catch (error) {
+    console.error('Error searching products:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+// add products
+app.post('/api/add-products', async (req, res) => {
+  const product = req.body;
+
+
+  try {
+    const result = await productsCollection.insertOne(product);
+    res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    console.error('Error adding product:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
+
+
 
     console.log("E-Rashid successfully connected to MongoDB!");
   } finally {
