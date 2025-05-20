@@ -53,6 +53,7 @@ completeBtn.addEventListener('click', () => {
   const finalData = {
     customer: { name, address, mobile },
     items,
+    rashidTime : new Date().toLocaleString(),
     originalTotal,
   };
 
@@ -165,7 +166,8 @@ function generatePDF(data) {
 }
 
 async function saveRashidToDB(data) {
-  const response = await fetch('/api/admin/add-rashid', {
+  // console.log(data)
+  const response = await fetch(`http://localhost:5000/api/admin/add-rashid`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -174,10 +176,22 @@ async function saveRashidToDB(data) {
   });
 
   if (!response.ok) {
-    throw new Error('Failed to save rashid');
+    showToast('Failed to save rashid');
+  }else {
+    showToast('Rashid saved successfully');
   }
 
   return response.json();
 }
 
 
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.innerText = message;
+    toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50";
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.classList.add('opacity-0');
+      toast.addEventListener('transitionend', () => toast.remove());
+    }, 3000);
+  }
