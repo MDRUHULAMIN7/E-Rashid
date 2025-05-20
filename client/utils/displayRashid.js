@@ -10,11 +10,20 @@ export function saveRashidItems(items) {
 
 export function displayRashidItems() {
   let rashidItems = getRashidItems();
+  const continueButton = document.getElementById('ContinueButton');
   const rashidList = document.getElementById('rashid-items');
+  if (rashidItems.length > 0) {
+  continueButton.classList.remove('hidden');
+} else {
+  continueButton.classList.add('hidden');
+}
+
   rashidList.innerHTML = '';
 
   if (rashidItems.length === 0) {
     rashidList.innerHTML = '<p class="text-center text-gray-500">No items in Rashid.</p>';
+    
+
     return;
   }
 
@@ -33,10 +42,11 @@ export function displayRashidItems() {
         <div class="flex-1">
           <p class="font-semibold">${item.name}</p>
 
-          <div class="flex items-center gap-2 mt-1">
-            <label class="text-sm text-gray-600">৳</label>
-            <input type="number" value="${item.price}" min="0" class="price-input w-20 px-2 border border-gray-300 rounded text-sm" data-index="${index}">
-          </div>
+      <div class="flex items-center gap-2 mt-1">
+  <label class="text-sm text-gray-600">৳</label>
+  <input type="number" value="${item.price}" min="0" class="price-input w-20 px-2 border border-gray-300 rounded text-sm" data-index="${index}">
+  <button class="update-price text-sm text-white bg-blue-500 px-2 rounded" data-index="${index}">Update</button>
+</div>
 
           <div class="flex items-center gap-2 mt-1">
             <button data-index="${index}" class="decrease bg-gray-200 px-2 rounded">-</button>
@@ -112,6 +122,21 @@ document.querySelectorAll('.remove').forEach(btn => {
     });
   });
 }
+
+// Handle price update via button
+document.querySelectorAll('.update-price').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const index = btn.dataset.index;
+    const input = document.querySelector(`.price-input[data-index="${index}"]`);
+    const newPrice = parseFloat(input.value);
+    if (!isNaN(newPrice) && newPrice >= 0) {
+      rashidItems[index].price = newPrice;
+      saveRashidItems(rashidItems);
+      displayRashidItems();
+    }
+  });
+});
+
  function updateRashidCount() {
   const rashidItems = JSON.parse(localStorage.getItem('rashid')) || [];
   const count = rashidItems.length;
@@ -122,6 +147,8 @@ document.querySelectorAll('.remove').forEach(btn => {
     rashidCount.textContent = count;
   }
 }
+
+
 document.addEventListener('DOMContentLoaded', () => {
   updateRashidCount(); 
 });

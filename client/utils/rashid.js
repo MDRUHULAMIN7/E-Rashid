@@ -54,13 +54,7 @@
     updateRashidModal();
   }
 
-  // Checkout button logic
-  document.getElementById("checkoutButton").addEventListener("click", () => {
-    alert("Proceeding to checkout...");
-    rashidItems = [];
-    rashidModal.classList.add("hidden");
-  });
-
+  
 
   // function to add products in local storage 
 
@@ -76,5 +70,11 @@ export default function updateRashidCount() {
   }
 }
 document.addEventListener('DOMContentLoaded', () => {
-  updateRashidCount(); // Call the function after the page is fully loaded
+  updateRashidCount(); 
 });
+
+
+
+
+
+
