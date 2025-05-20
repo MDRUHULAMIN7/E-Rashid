@@ -35,6 +35,7 @@ async function run() {
     // datbase collections
 const datbase = client.db("BillCraft");
 const productsCollection = datbase.collection('products')
+const rashidCollection = datbase.collection('rashid')
 
 
   app.get('/api/products', async (req, res) => {
@@ -55,7 +56,7 @@ app.get('/api/products/search', async (req, res) => {
       : {};
 
     const results = await productsCollection.find(query).toArray();
-    console.log('Search results count:', results.length);
+   
     res.json(results);
   } catch (error) {
     console.error('Error searching products:', error.message);
@@ -76,6 +77,21 @@ app.post('/api/add-products', async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
+// post all rashid
+app.post('/api/admin/add-rashid', async (req, res) => {
+  const rashid = req.body;
+
+  try {
+    const result = await rashidCollection.insertOne(rashid); // <-- use rashid here
+    res.status(201).json({ success: true, data: result });
+  } catch (error) {
+    console.error('Error adding rashid:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+
 
 
 
