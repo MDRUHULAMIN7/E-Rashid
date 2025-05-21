@@ -14,9 +14,9 @@ export function addToRashid(product) {
 
     localStorage.setItem('rashid', JSON.stringify(rashidItems));
     updateRashidCount();
-    showToast(`${product.name} added to Rashid `, 'success');
+    showToast(`${product.name} added to Invoice `, 'success');
   } else {
-    showToast(`${product.name} is already in Rashid `, 'error');
+    showToast(`${product.name} is already in Invoice `, 'error');
   }
 }
 
@@ -26,7 +26,7 @@ function showToast(message, type = 'success') {
   
   toast.className = `
     fixed bottom-5 right-5 px-4 py-2 rounded shadow-md z-50 transition-opacity duration-300
-    ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}
+    ${type === 'success' ? 'bg-[#096B68]' : 'bg-red-500'}
     text-white
   `;
   toast.innerText = message;

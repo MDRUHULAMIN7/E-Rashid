@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - Ecommerce Food Website</title>
+  <title>BillCraft - Ecommerce Billing Website</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="style.css" />
@@ -36,7 +36,7 @@
 
   <!-- Logo -->
   <div class="sidebar-heading text-center py-4">
-    <img src="imgs/1000001763.png" alt="Logo" class="img-fluid" style="width: 100px; height: 60px;">
+    <img src="https://i.ibb.co/cKPtgqzt/0e89acad-d127-4845-a7d2-6587a55e2e27-removebg-preview.png" alt="Logo" class="img-fluid h-18 w-44 mx-auto" >
   </div>
 
   <!-- Links -->
@@ -45,7 +45,7 @@
     <a href="#addProduct" id="add-product-link" class="list-group-item list-group-item-action bg-light">Add Product</a>
     <a href="#overview" id="overview-link" class="list-group-item list-group-item-action bg-light">Overview</a>
  <button id="rashid-button" class="w-full text-left px-4 py-2 hover:bg-gray-200 transition relative">
-  Rashid
+  Invoice
   <span id="rashidCount" class="absolute top-2 right-16 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
     0
   </span>
@@ -79,66 +79,127 @@
     </div>
   </section>
 
+  <!-- edit product modal  -->
+
+
+<div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+  <div class="bg-white w-full max-w-lg p-6 rounded-lg relative">
+    <h2 class="text-xl font-bold mb-4 text-[#129990]">Edit Product</h2>
+    <form id="editForm" class="space-y-3">
+      <input type="hidden" name="id" id="edit-id" />
+      <div>
+        <label class="block text-sm">Name</label>
+        <input id="edit-name" type="text" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div>
+        <label class="block text-sm">Description</label>
+        <textarea id="edit-description" class="w-full border border-gray-300 rounded px-3 py-1"></textarea>
+      </div>
+      <div>
+        <label class="block text-sm">Regular Price</label>
+        <input id="edit-regularPrice" type="number" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div>
+        <label class="block text-sm">Price</label>
+        <input id="edit-price" type="number" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div>
+        <label class="block text-sm">Image URL</label>
+        <input id="edit-image" type="text" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div>
+        <label class="block text-sm">Sales</label>
+        <input id="edit-sales" type="number" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div>
+        <label class="block text-sm">Category</label>
+        <input id="edit-category" type="text" class="w-full border border-gray-300 rounded px-3 py-1" />
+      </div>
+      <div class="flex justify-end mt-4">
+        <button type="button" id="closeModal" class="mr-3 text-gray-600 hover:text-gray-800">Cancel</button>
+        <button type="submit" class="bg-[#129990] text-white px-4 py-1 rounded hover:bg-[#0e7f77]">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
   <!-- Add Product Section -->
 
   
-<section id="addProduct" class="container mt-5 h-vh-90 p-4 ">
-  
-  <form id="add-product-form" class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8 space-y-6">
-  <h2 class="text-2xl font-bold text-center text-gray-800">Add New Product</h2>
+<section id="addProduct" class="container mt-10 h-vh-90 p-4 animate-fade-in">
+  <form id="add-product-form"
+    class="max-w-3xl mx-auto bg-white/30 backdrop-blur-md border border-[#129990]/30 shadow-xl rounded-3xl p-10 space-y-6 transition-all duration-300">
+    
+    <h2 class="text-3xl font-bold text-center text-[#129990] drop-shadow-md animate-slide-down">
+      Add New Product
+    </h2>
 
-  <!-- Product Name -->
-  <div>
-    <label for="productName" class="block font-medium text-gray-700 mb-1">Product Name</label>
-    <input type="text" id="productName" name="name" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required />
-  </div>
-
-  <!-- Description -->
-  <div>
-    <label for="productDesc" class="block font-medium text-gray-700 mb-1">Description</label>
-    <textarea id="productDesc" minlength="30" maxlength="300" name="description" rows="3" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required></textarea>
-  </div>
-
-  <!-- Category Dropdown -->
-  <div>
-    <label for="productCategory" class="block font-medium text-gray-700 mb-1">Category</label>
-    <select id="productCategory" name="category" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required>
-      <option value="">Select a category</option>
-      <option value="Vegetables">Vegetables</option>
-      <option value="Dairy">Dairy</option>
-      <option value="Grains">Grains</option>
-      <option value="Bakery">Bakery</option>
-      <option value="Frozen">Frozen</option>
-      <option value="Cooking Essentials">Cooking Essentials</option>
-    </select>
-  </div>
-
-  <!-- Price -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    <div>
-      <label for="productPrice" class="block font-medium text-gray-700 mb-1">Discounted Price</label>
-      <input type="number" id="productPrice" name="price" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required />
+    <!-- Product Name -->
+    <div class="group">
+      <label for="productName" class="block font-semibold text-gray-800 mb-1">Product Name</label>
+      <input type="text" id="productName" name="name"
+        class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+        required />
     </div>
 
+    <!-- Description -->
     <div>
-      <label for="regularPrice" class="block font-medium text-gray-700 mb-1">Regular Price</label>
-      <input type="number" id="regularPrice" name="regularPrice" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required />
+      <label for="productDesc" class="block font-semibold text-gray-800 mb-1">Description</label>
+      <textarea id="productDesc" minlength="30" maxlength="300" name="description" rows="3"
+        class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+        required></textarea>
     </div>
-  </div>
 
-  <!-- Image URL -->
-  <div>
-    <label for="productImage" class="block font-medium text-gray-700 mb-1">Image URL</label>
-    <input type="url" id="productImage" name="image" class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400" required />
-  </div>
+    <!-- Category Dropdown -->
+    <div>
+      <label for="productCategory" class="block font-semibold text-gray-800 mb-1">Category</label>
+      <select id="productCategory" name="category"
+        class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+        required>
+        <option value="">Select a category</option>
+        <option value="Vegetables">Vegetables</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Grains">Grains</option>
+        <option value="Bakery">Bakery</option>
+        <option value="Frozen">Frozen</option>
+        <option value="Cooking Essentials">Cooking Essentials</option>
+      </select>
+    </div>
 
-  <!-- Submit Button -->
-  <div class="text-center">
-    <button type="submit" class="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition duration-200 shadow-md">
-      <i class="bi bi-plus-circle-fill mr-2"></i> Add Product
-    </button>
-  </div>
-</form>
+    <!-- Price -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label for="productPrice" class="block font-semibold text-gray-800 mb-1">Discounted Price</label>
+        <input type="number" id="productPrice" name="price"
+          class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+          required />
+      </div>
+
+      <div>
+        <label for="regularPrice" class="block font-semibold text-gray-800 mb-1">Regular Price</label>
+        <input type="number" id="regularPrice" name="regularPrice"
+          class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+          required />
+      </div>
+    </div>
+
+    <!-- Image URL -->
+    <div>
+      <label for="productImage" class="block font-semibold text-gray-800 mb-1">Image URL</label>
+      <input type="url" id="productImage" name="image"
+        class="w-full border border-gray-300 rounded-xl px-4 py-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[#129990] focus:shadow-md"
+        required />
+    </div>
+
+    <!-- Submit Button -->
+    <div class="text-center pt-4">
+      <button type="submit"
+        class="bg-[#129990] text-white px-8 py-3 rounded-xl font-semibold hover:bg-[#0e7f79] transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg animate-bounce-slow">
+        <i class="bi bi-plus-circle-fill mr-2"></i> Add Product
+      </button>
+    </div>
+  </form>
 </section>
 
 
@@ -157,7 +218,7 @@
     
     <button id="closeRashidModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-xl">&times;</button>
     
-    <h2 class="text-2xl font-semibold text-center mb-4">Rashid - Your Items</h2>
+    <h2 class="text-2xl font-semibold text-center mb-4">Invoice - Your Items</h2>
     
     <div id="rashid-items" class="space-y-4  overflow-y-auto">
 
@@ -173,30 +234,38 @@
 </div>
 <!-- Final Rashid Modal -->
 
-<div id="finalRashidModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-60 flex items-center justify-center">
-  <div class="bg-white rounded-lg w-full max-w-3xl p-6 relative max-h-[90vh] overflow-y-auto">
-    <button id="closeFinalRashidModal" class="absolute top-3 right-3 text-gray-600 hover:text-red-500 text-2xl">&times;</button>
- <form action="">
-     
-    <h2 class="text-2xl font-bold mb-4 text-center">Final Rashid</h2>
-    
-    <div id="finalRashidItems" class="space-y-4"></div>
+<div id="finalRashidModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-60 flex items-center justify-center backdrop-blur-sm transition-opacity duration-300 ease-in-out">
+  <div class="bg-white rounded-2xl w-full max-w-3xl p-6 relative max-h-[90vh] overflow-y-auto shadow-2xl scale-95 animate-fade-in">
+    <!-- Close Button -->
+    <button id="closeFinalRashidModal" class="absolute top-3 right-3 text-[#129990] hover:text-red-500 text-3xl font-bold transition duration-200">&times;</button>
 
-    <h1 class="text-lg text-center font-semibold pt-4">Customer Information</h1>
-    <h5 class="text-center capitalize py-2">All Information Are required to complete rashid</h5>
+    <!-- Form -->
+    <form action="">
+      <!-- Header -->
+      <h2 class="text-3xl font-extrabold mb-4 text-center text-[#129990] tracking-wide">Final Invoice</h2>
+      <p class="text-center text-sm text-gray-500 mb-4 italic animate-pulse">All fields are required to complete the invoice.</p>
 
+      <!-- Product List -->
+      <div id="finalRashidItems" class="space-y-4 pb-4 border-b border-gray-200"></div>
 
-    <div class="space-y-2 mb-4">
-      <input type="text" id="customerName" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Customer Name" required>
-      <input type="text" id="customerAddress" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Customer Address" required>
-      <input type="text" id="customerMobile" class="w-full px-3 py-2 border border-gray-300 rounded" placeholder="Mobile Number" required>
-    </div>
+      <!-- Customer Info -->
+      <div class="mt-6 space-y-3">
+        <h3 class="text-lg font-semibold text-center text-gray-700">Customer Information</h3>
 
-    <div class="text-right">
-    <button id="completeButton" disabled class="bg-gray-400 px-3 py-1 rounded-lg cursor-not-allowed">Complete</button>
+        <input type="text" id="customerName" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#129990] outline-none transition" placeholder="Customer Name" required>
 
-    </div>
- </form>
+        <input type="text" id="customerAddress" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#129990] outline-none transition" placeholder="Customer Address" required>
+
+        <input type="text" id="customerMobile" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-[#129990] outline-none transition" placeholder="Mobile Number" required>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="text-right mt-6">
+        <button id="completeButton" disabled class="bg-gray-300 text-white px-6 py-2 rounded-md shadow cursor-not-allowed transition-transform transform hover:scale-105 duration-300 ease-in-out">
+          Complete
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -204,16 +273,20 @@
 <!-- PDF Preview Modal -->
 <div id="pdfModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
   <div class="bg-white p-4 rounded-lg max-w-3xl w-full h-[80vh] overflow-hidden relative">
-  
-         <button id="downloadPdfBtn" class="mt-4 absolute bottom-2 right-2 bg-green-600 text-white  px-4 py-2 rounded hidden">Download PDF</button>
-    <button id="closePdfModalBtn" class="absolute bottom-2 left-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">Close</button>
-
-
+    
+    <!-- PDF iframe -->
     <iframe id="pdfPreview" class="w-full h-full pt-1 pb-8 hidden" frameborder="0"></iframe>
-
-
+    
+    <!-- Buttons -->
+    <button id="downloadPdfBtn" class="absolute bottom-2 right-2 bg-green-600 text-white px-4 py-2 rounded hidden">
+      Download PDF
+    </button>
+    <button id="closePdfModalBtn" class="absolute bottom-2 left-2 bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700">
+      Close
+    </button>
   </div>
 </div>
+
 
 
 

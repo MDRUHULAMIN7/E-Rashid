@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+ const { ObjectId } = require('mongodb');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -92,12 +93,50 @@ app.post('/api/admin/add-rashid', async (req, res) => {
 });
 
 
+// edit product 
+
+app.put('/api/update-product', async (req, res) => {
+  console.log("hit")
+  const { id } = req.query;
+  const updatedProduct = req.body;
+
+
+  try {
+   
+    const result = await productsCollection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedProduct }
+    );
+
+    res.status(200).json({ success: true, data: result });
+  } catch (error) {
+    console.error('Error updating product:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+// delete product
+app.delete('/api/delete-product', async (req, res) => {
+  const { id } = req.query;
+
+  try {
+    const result = await productsCollection.deleteOne({ _id: new ObjectId(id) });
+
+    if (result.deletedCount === 1) {
+      res.status(200).json({ success: true, message: 'Product deleted successfully' });
+    } else {
+      res.status(404).json({ success: false, message: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting product:', error.message);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
 
 
 
 
 
-    console.log("E-Rashid successfully connected to MongoDB!");
+    console.log("BillCraft successfully connected to MongoDB!");
   } finally {
     
    
@@ -109,9 +148,9 @@ run().catch(console.dir);
 
 
 app.get( '/' ,(req,res)=>{
-    res.send('E-Rashid running');
+    res.send('Billcraft running');
 })
 
 app.listen(port,()=>{
-    console.log(`E-Rashid is running on:${port}`);
+    console.log(`Billcraft  is running on:${port}`);
 })

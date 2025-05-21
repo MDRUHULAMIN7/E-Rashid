@@ -1,13 +1,9 @@
-// Get DOM elements
+// DOM Elements
 const nameInput = document.getElementById('customerName');
 const addressInput = document.getElementById('customerAddress');
 const mobileInput = document.getElementById('customerMobile');
 const completeBtn = document.getElementById('completeButton');
-const finalModal = document.getElementById('finalRashidModal');
 const rashidModal = document.getElementById('rashidModal');
-const pdfModal = document.getElementById("pdfModal"); // 🔔 New modal to show PDF preview
-const iframe = document.getElementById("pdfPreview");
-const downloadBtn = document.getElementById("downloadPdfBtn");
 
 // Enable/disable Complete button based on input fields
 function checkFormCompletion() {
@@ -17,7 +13,6 @@ function checkFormCompletion() {
   const allFilled = name && address && mobile;
 
   completeBtn.disabled = !allFilled;
-
   completeBtn.classList.toggle('bg-gray-400', !allFilled);
   completeBtn.classList.toggle('cursor-not-allowed', !allFilled);
   completeBtn.classList.toggle('bg-blue-600', allFilled);
@@ -30,14 +25,8 @@ function checkFormCompletion() {
   input.addEventListener('input', checkFormCompletion)
 );
 
-// Show final modal and validate inputs
-function openFinalRashidModal() {
-  finalModal.classList.remove('hidden');
-  checkFormCompletion();
-}
-
-// Finalize and show PDF in modal
-completeBtn.addEventListener('click', () => {
+// Finalize and download PDF directly
+completeBtn.addEventListener('click', async () => {
   const name = nameInput.value.trim();
   const address = addressInput.value.trim();
   const mobile = mobileInput.value.trim();
@@ -53,69 +42,34 @@ completeBtn.addEventListener('click', () => {
   const finalData = {
     customer: { name, address, mobile },
     items,
-    rashidTime : new Date().toLocaleString(),
+    rashidTime: new Date().toLocaleString(),
     originalTotal,
   };
 
-
-  // Generate PDF
-  const pdfDoc = generatePDF(finalData);
-  const pdfBlob = pdfDoc.output("blob");
-  const pdfUrl = URL.createObjectURL(pdfBlob);
-
- 
-
-  // Hide previous modals
-  finalModal.classList.add('hidden');
-  rashidModal.classList.add('hidden');
-
-  // Show PDF in modal
-  iframe.src = pdfUrl;
-   pdfModal.classList.remove('hidden');
-  iframe.classList.remove("hidden");
-  downloadBtn.classList.remove("hidden");
-  iframe.classList.remove("hidden");
-  pdfModal.classList.remove("hidden");
-
-  // Download button
-  downloadBtn.classList.remove("hidden");
-downloadBtn.onclick = async () => {
   try {
+    const pdfDoc = generatePDF(finalData);
+
+    // Save PDF to disk immediately
     pdfDoc.save(`Rashid-${finalData.customer.name}.pdf`);
+
+    // Optional: save to server
     await saveRashidToDB(finalData);
-    console.log('Rashid saved successfully.');
-    
-  } catch (error) {
-    console.error(error);
-    alert('Failed to save data to server. PDF download cancelled.');
+
+    // Clean up UI
+    localStorage.removeItem('rashid');
+    localStorage.removeItem('finalRashid');
+    updateRashidCount();
+    rashidModal.classList.add('hidden');
+    showToast('PDF downloaded & Rashid saved');
+  } catch (err) {
+    console.error("Error generating PDF:", err);
+    alert("Failed to generate PDF.");
   }
-};
-
-
- 
-
-
-
-});
-const closePdfModalBtn = document.getElementById('closePdfModalBtn');
-
-
-closePdfModalBtn.addEventListener('click', () => {
-   // Cleanup
-   localStorage.removeItem('rashid');
-  localStorage.removeItem('finalRashid');
-  updateRashidCount();
-  pdfModal.classList.add('hidden');
-  document.getElementById('pdfPreview').src = "";
 });
 
-// Generate PDF
+// PDF Generator
 function generatePDF(data) {
-    // Cleanup
-   localStorage.removeItem('rashid');
-  localStorage.removeItem('finalRashid');
-  updateRashidCount();
-  const jsPDF = window.jspdf.jsPDF;
+  const { jsPDF } = window.jspdf;
   const doc = new jsPDF();
 
   const { name, address, mobile } = data.customer;
@@ -129,22 +83,14 @@ function generatePDF(data) {
   y += 10;
 
   doc.setFontSize(12);
-  doc.text(`Name: ${name}`, 10, y);
-  y += 6;
-  doc.text(`Address: ${address}`, 10, y);
-  y += 6;
-  doc.text(`Mobile: ${mobile}`, 10, y);
-  y += 10;
+  doc.text(`Name: ${name}`, 10, y); y += 6;
+  doc.text(`Address: ${address}`, 10, y); y += 6;
+  doc.text(`Mobile: ${mobile}`, 10, y); y += 10;
 
-  doc.text("Items:", 10, y);
-  y += 6;
+  doc.text("Items:", 10, y); y += 6;
 
   items.forEach((item, index) => {
-    doc.text(
-      `${index + 1}. ${item.name} - ${item.quantity} x ${item.price} = ${item.quantity * item.price} Taka`,
-      10,
-      y
-    );
+    doc.text(`${index + 1}. ${item.name} - ${item.quantity} x ${item.price} = ${item.quantity * item.price} Taka`, 10, y);
     y += 6;
   });
 
@@ -154,44 +100,40 @@ function generatePDF(data) {
 
   return doc;
 }
- function updateRashidCount() {
-  const rashidItems = JSON.parse(localStorage.getItem('rashid')) || [];
-  const count = rashidItems.length;
 
-
-  const rashidCount = document.getElementById('rashidCount');
-  if (rashidCount) {
-    rashidCount.textContent = count;
-  }
-}
-
+// Save to DB
 async function saveRashidToDB(data) {
-  // console.log(data)
   const response = await fetch(`http://localhost:5000/api/admin/add-rashid`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   });
 
   if (!response.ok) {
     showToast('Failed to save rashid');
-  }else {
+  } else {
     showToast('Rashid saved successfully');
   }
 
   return response.json();
 }
 
+// Rashid count updater
+function updateRashidCount() {
+  const rashidItems = JSON.parse(localStorage.getItem('rashid')) || [];
+  const count = rashidItems.length;
+  const rashidCount = document.getElementById('rashidCount');
+  if (rashidCount) rashidCount.textContent = count;
+}
 
+// Toast message
 function showToast(message) {
-    const toast = document.createElement('div');
-    toast.innerText = message;
-    toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50";
-    document.body.appendChild(toast);
-    setTimeout(() => {
-      toast.classList.add('opacity-0');
-      toast.addEventListener('transitionend', () => toast.remove());
-    }, 3000);
-  }
+  const toast = document.createElement('div');
+  toast.innerText = message;
+  toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50";
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('opacity-0');
+    toast.addEventListener('transitionend', () => toast.remove());
+  }, 3000);
+}

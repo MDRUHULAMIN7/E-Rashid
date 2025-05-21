@@ -1,3 +1,4 @@
+const { loadAllProducts } = require("./loadProducts");
 
   const form = document.getElementById('add-product-form');
   const submitBtn = form.querySelector('button[type="submit"]');
@@ -16,7 +17,7 @@
       regularPrice: parseFloat(form.regularPrice.value),
       image: form.image.value.trim()
     };
-    console.log(product)
+
 
     try {
       const res = await fetch('http://localhost:5000/api/add-products', {
@@ -26,8 +27,11 @@
       });
 
       const data = await res.json();
+      console.log(data)
       if (data.insertedId) {
+        
         showToast(" Product added to database!");
+        loadAllProducts()
         form.reset();
       } else {
         showToast(" Failed to add product.");
@@ -44,7 +48,7 @@
   function showToast(message) {
     const toast = document.createElement('div');
     toast.innerText = message;
-    toast.className = "fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded shadow-md z-50";
+    toast.className = "fixed bottom-5 right-5 bg-[#096B68] text-white px-4 py-2 rounded shadow-md z-50";
     document.body.appendChild(toast);
     setTimeout(() => {
       toast.classList.add('opacity-0');
